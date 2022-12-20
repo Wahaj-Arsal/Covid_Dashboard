@@ -4,6 +4,7 @@ import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../../theme.js";
 import { useTheme } from "@mui/material";
 import { mockPieData as data } from "../../data/mockData";
+import { red } from "@mui/material/colors";
 
 const Piechart = () => {
   const theme = useTheme();
@@ -43,6 +44,9 @@ const Piechart = () => {
       innerRadius={0.5}
       padAngle={0.7}
       cornerRadius={3}
+      tooltip={() => {
+        <></>;
+      }}
       activeOuterRadiusOffset={8}
       borderColor={{
         from: "color",
