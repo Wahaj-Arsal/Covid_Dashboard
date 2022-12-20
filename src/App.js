@@ -10,6 +10,7 @@ import Sidebar from "./pages/global/Sidebar.jsx";
 import Team from "./pages/team/Team.jsx";
 import Contacts from "./pages/contacts/Contacts.jsx";
 import Bar from "./pages/bar/Bar.jsx";
+import Pie from "./pages/pie/Pie.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -27,6 +28,7 @@ function App() {
               <Route path="/team" element={<Team />} />
               <Route path="/contacts" element={<Contacts />} />
               <Route path="/bar" element={<Bar />} />
+              <Route path="/pie" element={<Pie />} />
             </Routes>
           </main>
         </div>
