@@ -48,6 +48,9 @@ const Barchart = ({ isDashboard = false }) => {
       valueScale={{ type: "linear" }}
       indexScale={{ type: "band", round: true }}
       colors={{ scheme: "nivo" }}
+      tooltip={() => {
+        <></>;
+      }}
       defs={[
         {
           id: "dots",
