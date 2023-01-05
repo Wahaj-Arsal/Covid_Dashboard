@@ -29,6 +29,8 @@ const Dashboard = () => {
   const [covidData, setCovidData] = useState([]);
   const [countryList, setCountryList] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("Country");
+  const [selectedCountryData, setSelectedCountryData] = useState("Country");
+  const [totalPopulation, setTotalPopulation] = useState("");
 
   const fetchAPIData = () => {
     const options = {
@@ -50,6 +52,11 @@ const Dashboard = () => {
       });
   };
 
+  // HASH the data,
+  // When making the request, rather than making a request check if it is in the local Storage,
+  // if not call API otherwise use Stored Data
+  // Stop data getting too old, check the date it was stored, update if older than 1 day.
+
   useEffect(fetchAPIData, []);
 
   const getCountry = () => {
@@ -67,19 +74,38 @@ const Dashboard = () => {
     setSelectedCountry(event.target.value);
   };
 
-  const loadCountryDropdown = () => {
-    let country = [];
+  const findCountryData = () => {
     covidData.forEach((item) => {
-      country.push(item.country);
+      if (item.country === selectedCountry) {
+        console.log("TRUE");
+        setSelectedCountryData(item);
+        console.log(item);
+      }
     });
-    country.sort();
-    setCountryList(country);
   };
+
+  useEffect(findCountryData, [selectedCountry]);
+
+  const calculateTotalPopulation = () => {
+    let total = 0;
+    covidData.forEach((item) => {
+      total = total + item.population;
+    });
+    setTotalPopulation(total);
+  };
+
+  useEffect(calculateTotalPopulation, []);
+
+  // console.log(covidData);
 
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+        <Header
+          title="DASHBOARD"
+          subtitle="Welcome to your dashboard"
+          countryName={selectedCountryData.country}
+        />
         <Box>
           {/* <InputLabel>Country</InputLabel> */}
           <Select
@@ -125,10 +151,15 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="12,361"
-            subtitle="Emails Sent"
-            progress="0.75"
-            increase="+14%"
+            title={selectedCountryData.population}
+            subtitle="Population"
+            progress={selectedCountryData.population / totalPopulation}
+            percentage={
+              (
+                (selectedCountryData.population / totalPopulation) *
+                100
+              ).toFixed(2) + "%"
+            }
             icon={
               <EmailIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
